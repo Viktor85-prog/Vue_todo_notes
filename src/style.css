@@ -225,6 +225,10 @@ input:checked ~ .bubble::after {
 	background-color: var(--danger);
 }
 
+.todo-item .actions .edit {
+	background-color: var(--business);
+}
+
 .todo-item.done .todo-content input {
 	text-decoration: line-through;
 	color: var(--grey);
