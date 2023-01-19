@@ -17,7 +17,6 @@ const addNote = () => {
 	notes.value.push({
 		content:note_input_content.value,
 		done: false,
-		toDos: [],
 		createdAt: new Date().getTime()
 	})
 	note_input_content.value = ''
@@ -69,7 +68,7 @@ onMounted(() => {
 							<input type="text" v-model="note.content">
 						</div>
 						<div class="actions">
-							<button class="edit" @click="$router.push(`/note/${note.createdAt}`)">Edit</button>
+							<button class="edit" @click="$router.push(`/note/${note.content}/${note.createdAt}`)">Edit</button>
 							<button class="delete" @click="removeNote(note)">Delete</button>
 						</div>
 				</div>

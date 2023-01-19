@@ -10,14 +10,16 @@ const toDos_asc = computed(()=> toDos.value.sort((a,b) => {
 	return b.createdAt - a.createdAt
 }))
 
-const addToDo = (createdAt) => {
+const addToDo = (createdAt, noteContent) => {
 	if(toDo_input_content.value.trim() === '') {
 		return
 	} 
 	const notes = JSON.parse(localStorage.getItem('notes'))
 	const note = notes.find(n => n.createdAt == createdAt)
 
-	note.toDos.push({
+	toDos.value.push({
+		noteCreatedAt: createdAt,
+		noteContent:noteContent,
 		content:toDo_input_content.value,
 		done: false,
 		createdAt: new Date().getTime()
@@ -31,11 +33,12 @@ const removeToDo = (toDo) => {
 	toDos.value = toDos.value.filter(t => t !== toDo)
 }
 
+watch(toDos, newVal => {
+	localStorage.setItem('todos', JSON.stringify(newVal))
+}, {deep:true})
+
 onMounted(() => {
-	
-	const notes = JSON.parse(localStorage.getItem('notes'))
-	const note = notes.find(n => n.createdAt == route)
-	toDos.value = JSON.parse(localStorage.getItem('notes')) || []
+	toDos.value = JSON.parse(localStorage.getItem('todos')) || []
 })
 
 
@@ -46,13 +49,13 @@ onMounted(() => {
 
 	<section class="greeting">
 		<h2 class="title">
-			toDo list from {{$route.params.createdAt }}
+			toDo list from {{$route.params.content}}
 		</h2>
 	</section>
 
 	<section class="create-todo">
 		<h3>Create toDo</h3>
-		<form  @submit.prevent="(() => addToDo($route.params.createdAt))">
+		<form  @submit.prevent="(() => addToDo($route.params.createdAt,$route.params.content))">
 			<h4>What's on your toDo?</h4>
 			<input  type="text" 
 					placeholder="e.g. home todos"
@@ -66,6 +69,7 @@ onMounted(() => {
 			<div class="list">
 				<div :key="toDo.createdAt"
 					v-for="toDo in toDos_asc"
+					v-show="toDo.noteCreatedAt == $route.params.createdAt"
 					:class="`todo-item ${toDo.done && 'done'}`">
 						<label>
 							<input type="checkbox" v-model="toDo.done"/>

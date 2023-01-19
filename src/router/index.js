@@ -4,7 +4,7 @@ import ToDos from '../components/ToDos.vue'
 
 const routes = [
 	{path: '/', name: Notes, component: Notes},
-	{path: '/note/:createdAt', name: ToDos, component: ToDos},
+	{path: '/note/:content/:createdAt', name: ToDos, component: ToDos},
 ]
 
 const router = createRouter ({
