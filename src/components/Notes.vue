@@ -17,6 +17,7 @@ const addNote = () => {
 	notes.value.push({
 		content:note_input_content.value,
 		done: false,
+		toDos: [],
 		createdAt: new Date().getTime()
 	})
 	note_input_content.value = ''
@@ -57,23 +58,22 @@ onMounted(() => {
 
 	<section class="todo-list">
 		<h3>Notes</h3>
-		<div class="list">
-
-			<div :key="note.createdAt"
-				 v-for="note in notes_asc" 
-				:class="`todo-item ${note.done && 'done'}`">
-				<label>
-					<input type="checkbox" v-model="note.done"/>
-				</label>
-				<div class="todo-content">
-					<input type="text" v-model="note.content">
-				</div>
-				<div class="actions">
-					<button class="edit" @click="$router.push('/Todos')">Edit</button>
-					<button class="delete" @click="removeNote(note)">Delete</button>
+			<div class="list">
+				<div :key="note.createdAt"
+					v-for="note in notes_asc"
+					:class="`todo-item ${note.done && 'done'}`">
+						<label>
+							<input type="checkbox" v-model="note.done"/>
+						</label>
+						<div class="todo-content">
+							<input type="text" v-model="note.content">
+						</div>
+						<div class="actions">
+							<button class="edit" @click="$router.push(`/note/${note.createdAt}`)">Edit</button>
+							<button class="delete" @click="removeNote(note)">Delete</button>
+						</div>
 				</div>
 			</div>
-		</div>
 	</section>
 
  </main>
